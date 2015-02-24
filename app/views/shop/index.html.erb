@@ -1,0 +1,31 @@
+<style type="text/css">
+	.category-list {
+		margin-top:-20px;
+	}
+	th {
+		line-height: 10px;
+		background-color: gray;
+	}
+	td {
+		line-height:10px;
+		background-color: lightgray;
+	}
+	tbody>tr>td:hover {
+		background-color: lightblue;
+	}
+
+</style>
+<table class="table category-list hidden-sm hidden-md hidden-lg">
+	<thead>
+		<tr>
+			<th>Categories</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%@categories.each do |c|%>
+			<tr>
+				<td><%=link_to raw("#{c.try('name')} (#{c.items.count}) <i class='fa fa-arrow-right' style='float:right;'></i>"), category_path(c.name)%></td>
+			</tr>
+		<%end%>
+	</tbody>
+</table>

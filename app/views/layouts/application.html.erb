@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enactus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag :modernizr %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div class="container-fluid" style="padding-left:0;padding-right:0;">
+	<%=render "layouts/navigation" unless (current_user == nil || action_name =="first_sign_in")%>
+	<%=render "layouts/sidebar" unless (current_user == nil || action_name =="first_sign_in")%>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-md-offset-2 col-lg-offset-2 content">
+      <%if (controller_name=="users" && action_name!="signin")%>
+        <center>
+          <ul class="nav nav-pills user-show-nav hidden-md hidden-lg" id="user-nav">
+            <li class="active" id="show"><%=link_to "Profile", user_path(current_user)%></li>
+            <li id="settings"><%= link_to "Account Settings", settings_user_path(current_user)%></li>
+            <li id="history"><%= link_to "Transaction History", history_user_path(current_user)%></li>
+          </ul>
+        </center>
+      <%end%>
+      <br>
+      <%=yield%>
+    </div>
+  </div>
+  </div>
+	<nav class="navbar navbar-default navbar-fixed-bottom visible-md visible-lg" role="footer">
+  		<div class="container-fluid">
+    		<ul class="nav navbar-nav">
+    			<li><%=link_to raw("Unilever"), "http://www.unilever.co.za"%></li>
+    			<li class="divider"></li>
+    			<li><%=link_to "Western Cape CoLab", "http://2014.colabwc.co.za"%></li>
+    		</ul>
+  		</div>
+  	</nav>
+</body>
+
+</html>

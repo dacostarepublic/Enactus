@@ -1,0 +1,58 @@
+<style type="text/css">
+.item {
+ display: inline-block;
+ padding:  .25rem;
+ width:  150px;
+}
+
+.well {
+ position:relative;
+ display: block;
+ text-align: center;
+ font-size: small;
+ padding:0;
+ background-color: white
+}
+
+.price {
+	background-color: black;
+	color:white;
+	font-weight: bolder;
+}
+input.form-control, input.btn-primary{
+	border-top-left-radius: 0px;
+	-moz-border-top-left-radius: 0px;
+	-webkit-border-top-left-radius: 0px;
+	-o-border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	-moz-border-top-right-radius: 0px;
+	-webkit-border-top-right-radius: 0px;
+	-o-border-top-right-radius: 0px;
+}
+
+</style>
+<%@items.each do |item|%>
+	<%item.item_types.each do |item_type|%>
+		<div class="item">
+			<div class="well">
+				<div>
+					<center><%=image_tag item_type.picture.url, :class=>"img ", :style=>"margin-bottom:0px;"%></center>
+					<%=[item_type.amount.to_f,item_type.unit," ",item.item_name].join%>
+				</div>
+				<div class="price">
+					<%=item_type.cost%>
+				</div>
+				<%=form_for(:cart_item, :url=>add_to_cart_shop_index_path) do |f|%>
+					<%=f.hidden_field :user_id, :value=>current_user.id%>
+					<%=f.hidden_field :item_type_id, :value=>item_type.id%>
+					<div class="input-group">
+						<%=f.number_field :quantity, :class=>"form-control", :max=>item_type.quantity, :min=>1, :value=>1, :required=>true%>
+						<span class="input-group-btn">
+							<%=f.submit raw("Add"), :class=>"btn btn-primary"%>
+						</span>
+					</div>
+				<%end%>
+			</div>
+		</div>
+	<%end%>
+<%end%>

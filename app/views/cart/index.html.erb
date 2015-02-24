@@ -1,0 +1,48 @@
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Qty.</th>
+			<th>Item</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<%@cart.each do |c|%>
+			<tr>
+				<td><%=c.quantity%></td>
+				<td><%=c.item_type.item.item_name%> <%= c.item_type.amount.to_f%><%= c.item_type.unit%></td>
+				<td>
+					<div class="input-group" style="float:right;">
+						<button class="btn btn-success btn-xs btn-block"data-toggle="modal" data-target="#edit_cart<%=c.id%>"><i class="fa fa-edit"></i> Edit</button>
+						
+						<%=link_to raw("<i class='fa fa-minus-square'></i> Delete"), cart_path(c), :class=>"btn btn-danger btn-xs btn-block", :method=>:delete%>
+					</div>
+				</td>
+			</tr>
+			<div class="modal" id="edit_cart<%=c.id%>" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						</div>
+						<%=form_for(c,:url=> cart_path(c), :method=>:patch) do |f|%>
+							<div class="modal-body">
+								<div class="input-group">
+									<%=f.number_field :quantity, :max => c.item_type.quantity, :class=>"form-control"%>
+									<span class="input-group-btn">
+										<%=f.submit "Change", :class=>"btn btn-primary"%>
+									</span>
+								</div>
+							</div>
+							
+						<%end%>
+					</div>
+				</div>
+			</div>
+		<%end%>
+	</tbody>
+</table>
+<hr>
+<div class="input-group" style="float:right;padding-right:15px;">
+	<%=link_to "Checkout", "#", :class=>"btn btn-primary", :disabled=>(current_user.total_cart_items==0)%>
+</div>

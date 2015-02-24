@@ -1,0 +1,20 @@
+<nav class="navbar-default col-md-2 col-lg-2 visible-md visible-lg sidebar">
+	<ul class="nav nav-sidebar ">
+		<%if !["administration", "items"].include?(controller_name)%>
+			<!-- Normal menu -->
+			<li class="active"><%= link_to raw("<i class='fa fa-home'></i> Home"), root_path%></li>
+			<li><%= link_to raw("<i class='fa fa-money'></i> Shop"), shop_index_path%></li>
+			<li><%= link_to raw("<i class='fa fa-tags'></i> Specials"), specials_shop_index_path%></li>
+			<li><%= link_to raw("<i class='fa fa-gamepad'></i> Quizzes and Games"), games_path%></li>
+			<li><%= link_to raw("<i class='fa fa-recycle'></i> Recycling"), recycling_path%></li>
+			<li class="divider"></li>
+			<li><%= link_to raw("<i class='fa fa-users'></i> About Us"), about_us_path%></li>
+			<li><%= link_to raw("<i class='fa fa-question'></i> Help"), help_path%></li>
+		<%else%>
+			<!-- Menu for Admin console -->
+			<li><%= link_to "Carousel", carousel_admin_index_path%></li>
+			<li><%= link_to "Items", items_admin_index_path%></li>
+			<li><%= link_to "Orders", "#"%></li>
+		<%end%>
+	</ul>
+</nav>

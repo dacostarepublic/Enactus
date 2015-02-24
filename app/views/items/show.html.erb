@@ -1,0 +1,125 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-left:30px;">
+		<div class="well well-sm">
+			<p>This shows the details for each item in the store.<br>Here you can change the price of a product, add a picture or add a new varient of the product.</p>
+		</div>
+	</div>
+	<div class="col-sm-4 col-md-4 col-lg-4 hidden-xs" style="margin-left:30px;"><h3><%=@item.try("item_name")%></h3></div>
+	<div class="hidden-xs" style="">
+
+		<button class="btn btn-primary" data-toggle="modal" data-target="#new_item_type_modal" style="float:right;"><i class="fa fa-plus-square"></i> Add a new type</button>
+	</div>
+
+	<div class="col-sm-12 col-md-12 col-lg-12 hidden-xs" style="margin-left:30px;margin-top:20px;">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Picture (Y/N)</th>
+					<th>Volume</th>
+					<th>Quantity</th>
+					<th>Total Reserved</th>
+					<th>Total Sold</th>
+					<th>Unit Price</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<%@itemtypes.each do |i|%>
+					<tr>
+						<td><%=i.id%></td>
+						<td><%= i.picture? ? "Y" : "N"%></td>
+						<td><%=[i.try("amount"),i.try("unit")].join%></td>
+						<td><%= i.quantity%></td>
+						<td><%= i.try("reserved")%></td>
+						<td><%= i.try("sold")%></td>
+						<td><%=i.cost%></td>
+						<td>
+							<div class="input-group" style="float:right;">
+								<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#edit<%=i.id%>"><i class="fa fa-edit"></i> Edit</button>
+								<%= link_to raw("<i class='fa fa-minus-square'></i> Delete"), item_type_path(i),:class=>"btn btn-danger btn-xs", :method=>:delete%>
+							</div>
+						</td>
+					</tr>
+					<div class="modal" id="edit<%=i.id%>" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<%=form_for(i, :url=>item_type_path(i), :method=>:put) do |f|%>
+									<div class="modal-body">
+										<%=f.file_field :picture%>
+										<br>
+										<div class="input-group">
+											<%=f.text_field :amount, :placeholder=>"Volume", :required=>true, :class=>"form-control"%>
+											<span class="input-group-addon">
+												<%=f.select :unit, [["g - Grams", "g"], ["Kg - Kilograms","Kg"], ["ml - Milliliters",], ["l - Litres", "l"]]%>
+											</span>
+										</div>
+										<br>
+										<div class="input-group">
+											<span class="input-group-addon">Quantity</span>
+											<%=f.number_field :quantity, :class=>"form-control"%>
+										</div>
+										<br>
+										<div class="input-group">
+											<span class="input-group-addon">R</span>
+											<%=f.text_field :price, :placeholder=>"Price per unit", :class=>"form-control"%>
+										</div>
+										<%=f.hidden_field :id, :value=>i.id%>
+										
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+										<%=f.submit "Submit", :class=>"btn btn-primary"%>
+									</div>
+								<%end%>
+							</div>
+						</div>
+
+					</div>
+				<%end%>
+			</tbody>
+		</table>	
+	</div>
+</div>
+<div class="modal" id="new_item_type_modal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<%=form_for(:item_type, :url=>item_types_path) do |f|%>
+				<div class="modal-body">
+					<%=f.file_field :picture%>
+					<br>
+					<div class="input-group">
+						<%=f.text_field :amount, :placeholder=>"Volume", :required=>true, :class=>"form-control"%>
+						<span class="input-group-addon">
+							<%=f.select :unit, [["g - Grams", "g"], ["Kg - Kilograms","Kg"], ["ml - Milliliters","ml"], ["l - Litres", "l"]]%>
+						</span>
+					</div>
+					<br>
+					<div class="input-group">
+						<span class="input-group-addon">Quantity</span>
+						<%=f.number_field :quantity, :class=>"form-control"%>
+					</div>
+					<br>
+					<div class="input-group">
+						<span class="input-group-addon">R</span>
+						<%=f.text_field :price, :placeholder=>"Price per unit", :class=>"form-control"%>
+					</div>
+					<%=f.hidden_field :item_id, :value=>params[:id]%>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+					<%=f.submit "Submit", :class=>"btn btn-primary"%>
+				</div>
+			<%end%>
+		</div>
+	</div>
+
+</div>

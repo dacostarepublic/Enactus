@@ -1,0 +1,39 @@
+<div class="container-fluid" style="padding-left:0;padding-right:0;">
+	<%if @carousels!=[]%>
+		<div id="highlights-carousel" class="carousel slide visible-xs" data-interval="3000" data-ride="carousel" style="margin:-15px;margin-top:-20px;">
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner">
+				
+					<div class="item active">
+						<%=image_tag @carousels[0].picture.url(:mobile)%>
+					</div>
+					<%if @carousels.count > 1%>
+						<%@carousels[1..-1].each do |f|%>
+							<div class="item">
+								<%=image_tag f.picture.url(:mobile)%>
+							</div>
+						<%end%>
+					<%end%>
+				
+				
+			</div>
+			<!-- <a class="left carousel-control" href="#highlights-carousel" role="button" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left"></span>
+			</a>
+			<a class="right carousel-control" href="#highlights-carousel" role="button" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right"></span>
+			</a> -->
+		</div>
+	<%end%>
+</div>
+<script>
+  $(document).ready(function() {
+    $("#highlights-carousel").swiperight(function() {
+        $("#highlights-carousel").carousel('prev');
+    });
+    $("#highlights-carousel").swipeleft(function() {
+        $("#highlights-carousel").carousel('next');
+    });
+    
+  });
+</script>
